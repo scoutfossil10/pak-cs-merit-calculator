@@ -37,9 +37,10 @@ with tab1:
     if "LUMS" not in uni:
         c1, c2 = st.columns(2)
         with c1:
-            test_obt = st.number_input("Entry Test Obtained Marks", min_value=0.0, max_value=400.0, value=145.0)
+            test_obt = st.number_input("Entry Test / SAT Obtained Marks", min_value=0.0, max_value=1600.0, value=145.0)
         with c2:
-            test_tot = st.number_input("Entry Test Total Marks", min_value=1.0, max_value=400.0, value=200.0)
+            test_tot = st.number_input("Entry Test / SAT Total Marks", min_value=1.0, max_value=1600.0, value=200.0)
+
 
     if st.button("Check Eligibility / Calculate Aggregate", type="primary"):
         if "LUMS" in uni:
