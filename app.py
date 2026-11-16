@@ -86,3 +86,4 @@ with tab2:
 
 st.divider()
 st.caption("Have feedback or want to suggest a university formula? Email **khoonlahore.support@gmail.com**")
+st.link_button("📝 Quick 10-Second Feedback / Suggest a University", "https://docs.google.com/forms/d/e/1FAIpQLSdg7M9FEw8RMs8JsJRf41t6LXIz1vaiFTfWeI8Djn6kFTpWqA/viewform")
