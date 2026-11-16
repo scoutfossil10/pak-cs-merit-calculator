@@ -23,8 +23,9 @@ tab1, tab2 = st.tabs(["Calculate My Aggregate", "Target Entry Test Score"])
 
 # TAB 1: CALCULATE AGGREGATE
 with tab1:
-    st.subheader("2. Enter Your Entry Test Score")
+    st.subheader("2. Select University & Entry Test Score")
     uni = st.selectbox("Select University & Formula", [
+        "LUMS (Holistic — Matric, Inter-1 & SAT/LCAT)",
         "NUST (NET — 75% Test, 15% Inter, 10% Matric)",
         "FAST-NUCES (NU Test — 50% Test, 40% Inter, 10% Matric)",
         "COMSATS Lahore (NTS NAT — 50% Test, 40% Inter, 10% Matric)",
@@ -33,35 +34,36 @@ with tab1:
         "GIKI (GIKI Test — 85% Test, 15% Inter)"
     ])
 
-    c1, c2 = st.columns(2)
-    with c1:
-        test_obt = st.number_input("Entry Test Obtained Marks", min_value=0.0, max_value=400.0, value=145.0)
-    with c2:
-        test_tot = st.number_input("Entry Test Total Marks", min_value=1.0, max_value=400.0, value=200.0)
+    if "LUMS" not in uni:
+        c1, c2 = st.columns(2)
+        with c1:
+            test_obt = st.number_input("Entry Test Obtained Marks", min_value=0.0, max_value=400.0, value=145.0)
+        with c2:
+            test_tot = st.number_input("Entry Test Total Marks", min_value=1.0, max_value=400.0, value=200.0)
 
-    if st.button("Calculate Aggregate", type="primary"):
-        test_pct = (test_obt / test_tot) * 100
-
-        if "NUST" in uni:
-            agg = (test_pct * 0.75) + (inter_pct * 0.15) + (matric_pct * 0.10)
-        elif "FAST" in uni or "COMSATS" in uni:
-            agg = (test_pct * 0.50) + (inter_pct * 0.40) + (matric_pct * 0.10)
-        elif "ITU" in uni:
-            agg = (test_pct * 0.50) + (inter_pct * 0.35) + (matric_pct * 0.15)
-        elif "UET" in uni:
-            agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
-        elif "LUMS" in uni:
-            st.info("**LUMS uses a holistic admission model** (no fixed aggregate formula), evaluating Matric, Inter-1, SAT/LCAT, essays, and extracurriculars together.")
+    if st.button("Check Eligibility / Calculate Aggregate", type="primary"):
+        if "LUMS" in uni:
+            st.info("**LUMS uses a holistic admission model** (no fixed aggregate percentage), evaluating Matric, Inter-1, SAT/LCAT, personal statement, and extracurriculars together.")
             if matric_pct >= 70 and inter_pct >= 70:
                 st.success(f"✅ Your board marks (Matric: {matric_pct:.1f}%, Inter-1: {inter_pct:.1f}%) meet LUMS minimum eligibility! Competitive SBASSE (CS) applicants typically aim for **1350–1450+ on the SAT** (or a strong LCAT).")
             else:
                 st.warning("⚠️ LUMS generally requires at least 70% in Matric and 70% in Intermediate (FSc/ICS) for SBASSE eligibility.")
+        else:
+            test_pct = (test_obt / test_tot) * 100
 
-        else:  # GIKI
-            agg = (test_pct * 0.85) + (inter_pct * 0.15)
+            if "NUST" in uni:
+                agg = (test_pct * 0.75) + (inter_pct * 0.15) + (matric_pct * 0.10)
+            elif "FAST" in uni or "COMSATS" in uni:
+                agg = (test_pct * 0.50) + (inter_pct * 0.40) + (matric_pct * 0.10)
+            elif "ITU" in uni:
+                agg = (test_pct * 0.50) + (inter_pct * 0.35) + (matric_pct * 0.15)
+            elif "UET" in uni:
+                agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
+            else:  # GIKI
+                agg = (test_pct * 0.85) + (inter_pct * 0.15)
 
-        st.success(f"**Your Estimated Aggregate:** `{agg:.2f}%`")
-        st.caption("Note: Weightage formulas follow standard university policies; always verify with the latest prospectus.")
+            st.success(f"**Your Estimated Aggregate:** `{agg:.2f}%`")
+            st.caption("Note: Weightage formulas follow standard university policies; always verify with the latest prospectus.")
 
 # TAB 2: REVERSE TARGET SCORE CALCULATOR
 with tab2:
@@ -90,7 +92,7 @@ with tab2:
     st.write(f"🔬 **ITU Lahore Test (out of 100):** {format_req(req_itu, 100)}")
     st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet, 400)}")
     st.write(f"🏔️ **GIKI Test (out of 200):** {format_req(req_giki, 200)}")
+    st.caption("Note: LUMS evaluates applicants holistically (Matric, Inter-1, SAT/LCAT & essays) rather than a fixed aggregate cutoff.")
 
 st.divider()
-st.caption("Have feedback or want to suggest a university formula? Email **khoonlahore.support@gmail.com**")
-st.link_button("📝 Quick 10-Second Feedback / Suggest a University", "https://docs.google.com/forms/d/e/1FAIpQLSdg7M9FEw8RMs8JsJRf41t6LXIz1vaiFTfWeI8Djn6kFTpWqA/viewform")
+st.link_button("📝 Quick 10-Second Feedback / Suggest a University", "https://docs.google.com/forms/d/e/1FAIpQLSdg7M9FEw8RMs8JsJRf41t6LXIz1vaiFTfWeI8Djn6kFTpWqA/viewform?usp=dialog")
