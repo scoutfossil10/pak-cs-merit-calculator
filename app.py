@@ -31,7 +31,7 @@ with tab1:
         "COMSATS Lahore (NTS NAT — 50% Test, 40% Inter, 10% Matric)",
         "ITU Lahore (ITU Test / NAT — 50% Test, 35% Inter, 15% Matric)",
         "UET Lahore (ECAT — 33% Test, 50% Inter, 17% Matric)",
-        "GIKI (GIKI Test — 85% Test, 15% Inter)"
+        "GIKI (GIKI Test — 85% Test, 15% Matric; 60% Inter min)"
     ])
 
     if "LUMS" not in uni:
@@ -61,7 +61,7 @@ with tab1:
             elif "UET" in uni:
                 agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
             else:  # GIKI
-                agg = (test_pct * 0.85) + (inter_pct * 0.15)
+                agg = (test_pct * 0.85) + (matric_pct * 0.15)
 
             st.success(f"**Your Estimated Aggregate:** `{agg:.2f}%`")
             st.caption("Note: Weightage formulas follow standard university policies; always verify with the latest prospectus.")
@@ -76,7 +76,8 @@ with tab2:
     req_fast = (target_agg - (inter_pct * 0.40) - (matric_pct * 0.10)) / 0.50
     req_itu = (target_agg - (inter_pct * 0.35) - (matric_pct * 0.15)) / 0.50
     req_uet = (target_agg - (inter_pct * 0.50) - (matric_pct * 0.17)) / 0.33
-    req_giki = (target_agg - (inter_pct * 0.15)) / 0.85
+    req_giki = (target_agg - (matric_pct * 0.15)) / 0.85
+
 
     def format_req(req_pct, max_marks):
         if req_pct <= 0:
