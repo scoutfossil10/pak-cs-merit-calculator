@@ -50,7 +50,7 @@ with tab1:
             agg = (test_pct * 0.50) + (inter_pct * 0.35) + (matric_pct * 0.15)
         elif "UET" in uni:
             agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
-         elif "LUMS" in uni:
+        elif "LUMS" in uni:
             st.info("**LUMS uses a holistic admission model** (no fixed aggregate formula), evaluating Matric, Inter-1, SAT/LCAT, essays, and extracurriculars together.")
             if matric_pct >= 70 and inter_pct >= 70:
                 st.success(f"✅ Your board marks (Matric: {matric_pct:.1f}%, Inter-1: {inter_pct:.1f}%) meet LUMS minimum eligibility! Competitive SBASSE (CS) applicants typically aim for **1350–1450+ on the SAT** (or a strong LCAT).")
