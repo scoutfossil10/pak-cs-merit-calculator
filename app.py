@@ -35,11 +35,21 @@ with tab1:
     ])
 
     if "LUMS" not in uni:
+        # Set realistic default (Obtained, Total) based on the selected university
+        if "NUST" in uni:
+            def_obt, def_tot = 150.0, 200.0
+        elif "UET" in uni:
+            def_obt, def_tot = 260.0, 400.0
+        elif "GIKI" in uni:
+            def_obt, def_tot = 140.0, 200.0
+        else:  # FAST, COMSATS, ITU (standard 100-mark scale)
+            def_obt, def_tot = 75.0, 100.0
+
         c1, c2 = st.columns(2)
         with c1:
-            test_obt = st.number_input("Entry Test / SAT Obtained Marks", min_value=0.0, max_value=1600.0, value=145.0)
+            test_obt = st.number_input("Entry Test / SAT Obtained Marks", min_value=0.0, max_value=1600.0, value=def_obt, key=f"obt_{uni}")
         with c2:
-            test_tot = st.number_input("Entry Test / SAT Total Marks", min_value=1.0, max_value=1600.0, value=200.0)
+            test_tot = st.number_input("Entry Test / SAT Total Marks", min_value=1.0, max_value=1600.0, value=def_tot, key=f"tot_{uni}")
 
 
     if st.button("Check Eligibility / Calculate Aggregate", type="primary"):
