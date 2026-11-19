@@ -33,7 +33,7 @@ with tab1:
         "NUST (NET — 75% Test, 15% Inter, 10% Matric)",
         "FAST-NUCES (NU Test — 50% Test, 40% Inter, 10% Matric)",
         "COMSATS Lahore (NTS NAT — 50% Test, 40% Inter, 10% Matric)",
-        "ITU Lahore (ITU Test / NAT — 50% Test, 35% Inter, 15% Matric)",
+        "ITU Lahore (ITU CS Test — 50% Test, 35% Inter, 15% Matric)",
         "UET Lahore (ECAT — 33% Test, 50% Inter, 17% Matric)",
         "GIKI (GIKI Test — 85% Test, 15% Matric; 60% Inter min)"
     ])
@@ -45,7 +45,7 @@ with tab1:
     elif "COMSATS" in uni:
         st.caption("ℹ️ COMSATS accepts **NTS NAT** or **COMSATS Special Test** (both out of **100** marks).")
     elif "ITU" in uni:
-        st.caption("ℹ️ Enter your ITU Test score out of **100** (or **60** for raw MCQs, **400** for ECAT, **1600** for SAT).")
+        st.caption("ℹ️ ITU CS/AI Test is out of **60** MCQs (or enter **100** for Engineering/NAT, **400** for ECAT, **1600** for SAT).")
     elif "UET" in uni:
         st.caption("ℹ️ UET ECAT is out of **400** marks (Hafiz-e-Quran candidates get +20 marks in FSc).")
     elif "GIKI" in uni:
@@ -54,11 +54,13 @@ with tab1:
     if "LUMS" not in uni:
         if "NUST" in uni:
             def_obt, def_tot = 150.0, 200.0
+        elif "ITU" in uni:
+            def_obt, def_tot = 45.0, 60.0
         elif "UET" in uni:
             def_obt, def_tot = 260.0, 400.0
         elif "GIKI" in uni:
             def_obt, def_tot = 140.0, 200.0
-        else:
+        else:  # FAST, COMSATS
             def_obt, def_tot = 75.0, 100.0
 
         c1, c2 = st.columns(2)
@@ -114,11 +116,11 @@ with tab2:
             marks = (req_pct / 100) * max_marks
             return f"**{marks:.1f} / {max_marks}** ({req_pct:.1f}%)"
 
-    st.write(f"🏛️ **NUST NET (out of 200):** {format_req(req_nust, 200)} *(Typical CS closing: ~78–81%)*")
-    st.write(f"💻 **FAST NU Test (out of 100):** {format_req(req_fast, 100)} *(Typical LHR/ISB CS closing: ~75–79%)*")
-    st.write(f"📘 **COMSATS NTS NAT (out of 100):** {format_req(req_fast, 100)} *(Typical LHR/ISB CS closing: ~87–90%)*")
-    st.write(f"🔬 **ITU Lahore Test (out of 100):** {format_req(req_itu, 100)} *(Typical CS closing: ~78–82%)*")
-    st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet, 400)} *(Typical LHR CS closing: ~78–82%)*")
+    st.write(f"🏛️ **NUST NET (out of 200):** {format_req(req_nust, 200)} *(2026 SEECS CS closing: ~76.8–79%)*")
+    st.write(f"💻 **FAST NU Test (out of 100):** {format_req(req_fast, 100)} *(2026 LHR/ISB CS closing: ~73–75%)*")
+    st.write(f"📘 **COMSATS NTS NAT (out of 100):** {format_req(req_fast, 100)} *(2026 LHR CS: ~85–86.5% | ISB: ~88%)*")
+    st.write(f"🔬 **ITU Lahore CS Test (out of 60 MCQs):** {format_req(req_itu, 60)} *(2026 CS closing: ~80.5%)*")
+    st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet, 400)} *(2026 Main Campus A1 CS: ~79–82%)*")
     st.write(f"🏔️ **GIKI Test (out of 200):** {format_req(req_giki, 200)}")
     st.caption("Note: LUMS evaluates applicants holistically (Matric, Inter-1, SAT/LCAT & essays) rather than a fixed aggregate cutoff.")
 
