@@ -34,6 +34,19 @@ with tab1:
         "GIKI (GIKI Test — 85% Test, 15% Matric; 60% Inter min)"
     ])
 
+     if "NUST" in uni:
+        st.caption("ℹ️ NUST NET is out of **200** marks (or enter **1600** total if applying on SAT basis).")
+    elif "FAST" in uni:
+        st.caption("ℹ️ FAST NU Test is out of **100** marks (or enter **1600** total if applying on SAT basis — min 1200 SAT required).")
+    elif "COMSATS" in uni:
+        st.caption("ℹ️ COMSATS accepts **NTS NAT** or **COMSATS Special Test** (both out of **100** marks).")
+    elif "ITU" in uni:
+        st.caption("ℹ️ Enter your ITU Test percentage out of **100** (or **60** for raw MCQs, **400** for ECAT, or **1600** for SAT — min 550 Math & 550 EBRW).")
+    elif "UET" in uni:
+        st.caption("ℹ️ UET ECAT is out of **400** marks.")
+    elif "GIKI" in uni:
+        st.caption("ℹ️ GIKI Admission Test is out of **200** marks.")
+
     if "LUMS" not in uni:
         # Set realistic default (Obtained, Total) based on the selected university
         if "NUST" in uni:
