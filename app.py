@@ -125,4 +125,4 @@ with tab2:
     st.caption("Note: LUMS evaluates applicants holistically (Matric, Inter-1, SAT/LCAT & essays) rather than a fixed aggregate cutoff.")
 
 st.divider()
-st.link_button("📝 Quick 10-Second Feedback / Suggest a University", "https://google.com")
+st.link_button("📝 Quick 10-Second Feedback / Suggest a University", "https://docs.google.com/forms/d/e/1FAIpQLSdg7M9FEw8RMs8JsJRf41t6LXIz1vaiFTfWeI8Djn6kFTpWqA/viewform?usp=dialog")
