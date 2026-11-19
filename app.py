@@ -1,7 +1,7 @@
 import streamlit as st
 
-st.set_page_config(page_title="Pakistani CS Merit Calculator", page_icon="🎓")
-st.title("🎓 Pakistani CS Merit & Target Score Calculator")
+st.set_page_config(page_title="Pakistani CS & Engineering Merit Calculator", page_icon="🎓")
+st.title("🎓 Pakistani CS & Engineering Merit Calculator")
 st.caption("Built for FBISE & BISE Lahore FSc / ICS Students | By a 2nd Year CS Applicant")
 
 # Step 1: Board Marks Input
@@ -33,7 +33,7 @@ with tab1:
         "NUST (NET — 75% Test, 15% Inter, 10% Matric)",
         "FAST-NUCES (NU Test — 50% Test, 40% Inter, 10% Matric)",
         "COMSATS Lahore (NTS NAT — 50% Test, 40% Inter, 10% Matric)",
-        "ITU Lahore (ITU CS Test — 50% Test, 35% Inter, 15% Matric)",
+        "ITU Lahore (ITU Test / NAT — 50% Test, 35% Inter, 15% Matric)",
         "UET Lahore (ECAT — 33% Test, 50% Inter, 17% Matric)",
         "GIKI (GIKI Test — 85% Test, 15% Matric; 60% Inter min)"
     ])
@@ -73,9 +73,9 @@ with tab1:
         if "LUMS" in uni:
             st.info("**LUMS uses a holistic admission model** (no fixed aggregate percentage), evaluating Matric, Inter-1, SAT/LCAT, personal statement, and extracurriculars together.")
             if matric_pct >= 75 and inter_pct >= 75:
-                st.success(f"✅ Your board marks (Matric: {matric_pct:.1f}%, Inter-1: {inter_pct:.1f}%) meet LUMS SBASSE minimum eligibility (75%+ in both)! Competitive CS applicants typically aim for **1350–1450+ on the SAT** (or a strong LCAT).")
+                st.success(f"✅ Your board marks (Matric: {matric_pct:.1f}%, Inter-1: {inter_pct:.1f}%) meet LUMS SBASSE minimum eligibility (75%+ in both)! Competitive CS/Engineering applicants typically aim for **1350–1450+ on the SAT** (or a strong LCAT).")
             else:
-                st.warning("⚠️ LUMS SBASSE (Computer Science) strictly requires at least **75% in Matric and 75% in Intermediate** (FSc/ICS).")
+                st.warning("⚠️ LUMS SBASSE (CS & Engineering) strictly requires at least **75% in Matric and 75% in Intermediate** (70% for other schools).")
         else:
             if test_obt > test_tot:
                 st.error("⚠️ Entry test obtained marks cannot exceed total marks.")
@@ -116,10 +116,20 @@ with tab2:
             marks = (req_pct / 100) * max_marks
             return f"**{marks:.1f} / {max_marks}** ({req_pct:.1f}%)"
 
+    def format_itu_req(req_pct):
+        if req_pct <= 0:
+            return "Already cleared by board marks!"
+        elif req_pct > 100:
+            return f"Not reachable ({req_pct:.1f}% needed)"
+        else:
+            marks_60 = (req_pct / 100) * 60
+            marks_100 = (req_pct / 100) * 100
+            return f"**{marks_60:.1f} / 60** (CS) | **{marks_100:.1f} / 100** (Eng/NAT) ({req_pct:.1f}%)"
+
     st.write(f"🏛️ **NUST NET (out of 200):** {format_req(req_nust, 200)} *(2026 SEECS CS closing: ~76.8–79%)*")
     st.write(f"💻 **FAST NU Test (out of 100):** {format_req(req_fast, 100)} *(2026 LHR/ISB CS closing: ~73–75%)*")
     st.write(f"📘 **COMSATS NTS NAT (out of 100):** {format_req(req_fast, 100)} *(2026 LHR CS: ~85–86.5% | ISB: ~88%)*")
-    st.write(f"🔬 **ITU Lahore CS Test (out of 60 MCQs):** {format_req(req_itu, 60)} *(2026 CS closing: ~80.5%)*")
+    st.write(f"🔬 **ITU Lahore Test:** {format_itu_req(req_itu)} *(2026 CS closing: ~80.5%)*")
     st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet, 400)} *(2026 Main Campus A1 CS: ~79–82%)*")
     st.write(f"🏔️ **GIKI Test (out of 200):** {format_req(req_giki, 200)}")
     st.caption("Note: LUMS evaluates applicants holistically (Matric, Inter-1, SAT/LCAT & essays) rather than a fixed aggregate cutoff.")
