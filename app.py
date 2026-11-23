@@ -124,13 +124,21 @@ with tab1:
         f"| Test is out of {w['total']}"
     )
 
+    score_type = st.radio("Which score are you using?",
+                          ["University entry test", "SAT (out of 1600)"],
+                          horizontal=True, key=f"type_{key}")
+    default_total = 1600.0 if score_type.startswith("SAT") else float(w["total"])
+    if score_type.startswith("SAT"):
+        st.caption("ℹ️ SAT uses the same weights as the entry test here. Some universities use a "
+                   "different SAT formula or a separate merit list, so check the prospectus.")
+
     c1, c2 = st.columns(2)
     with c1:
-        test_obt = st.number_input("Test Obtained Marks", min_value=0.0, max_value=1600.0,
-                                   value=0.0, key=f"obt_{key}")
+        test_obt = st.number_input("Score Obtained", min_value=0.0, max_value=1600.0,
+                                   value=0.0, key=f"obt_{key}_{score_type}")
     with c2:
-        test_tot = st.number_input("Test Total Marks", min_value=1.0, max_value=1600.0,
-                                   value=float(w["total"]), key=f"tot_{key}")
+        test_tot = st.number_input("Score Total", min_value=1.0, max_value=1600.0,
+                                   value=default_total, key=f"tot_{key}_{score_type}")
 
     # Eligibility gate (like a guard at the door)
     if w["min_inter"] and inter_pct < w["min_inter"]:
@@ -163,7 +171,9 @@ with tab2:
             result = f"Not reachable ({need_pct:.1f}% needed)"
         else:
             marks = need_pct / 100 * u["total"]
-            result = f"**{marks:.1f} / {u['total']}** ({need_pct:.1f}%)"
+            sat_marks = need_pct / 100 * 1600
+            result = (f"**{marks:.1f} / {u['total']}** ({need_pct:.1f}%) "
+                      f"| SAT: **{sat_marks:.0f} / 1600**")
         line = f"**{u['name']}:** {result}"
         if u["closing"]:
             line += f" *({u['closing']})*"
