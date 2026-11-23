@@ -4,15 +4,13 @@ st.set_page_config(page_title="Pakistani CS & Engineering Merit Calculator", pag
 st.title("🎓 Pakistani CS & Engineering Merit Calculator")
 st.caption("Built for FBISE & BISE Lahore FSc / ICS Students | By a 2nd Year CS Applicant")
 st.caption("Based on Matric + Inter Part-1 marks, as used by most universities for admission. Final admission may depend on passing Part-2. Check each prospectus.")
-# TWEAK: unofficial label
 st.warning("⚠️ Unofficial estimate. Weightages and closing merits were last updated in Nov 2026. Always verify with the official prospectus.")
 
 # Step 1: Board Marks Input
 st.subheader("1. Enter Your Board Marks")
-st.caption("Check your total marks on your result card, because totals can differ by board and group.")  # TWEAK
+st.caption("Check your total marks on your result card, because totals can differ by board and group.")
 col1, col2 = st.columns(2)
 with col1:
-    # TWEAK: obtained marks start at 0 (no personal marks as defaults)
     matric_obt = st.number_input("Matric Obtained Marks", min_value=0, max_value=1200, value=0)
     matric_tot = st.number_input("Matric Total Marks", min_value=1, max_value=1200, value=1100)
 with col2:
@@ -23,7 +21,6 @@ if matric_obt > matric_tot or inter_obt > inter_tot:
     st.error("⚠️ Obtained marks cannot be greater than total marks.")
     st.stop()
 
-# TWEAK: wait until the student enters marks
 if matric_obt == 0 or inter_obt == 0:
     st.info("👆 Enter your Matric and Inter Part-1 marks to begin.")
     st.stop()
@@ -41,7 +38,8 @@ with tab1:
     uni = st.selectbox("Select University & Formula", [
         "LUMS (Holistic — Matric, Inter-1 & SAT/LCAT)",
         "NUST (NET — 75% Test, 15% Inter, 10% Matric)",
-        "FAST-NUCES (NU Test — 50% Test, 40% Inter, 10% Matric)",
+        "FAST-NUCES Computing/Business (NU Test — 50% Test, 40% Inter, 10% Matric)",
+        "FAST-NUCES Engineering (NU Test — 33% Test, 50% Inter, 17% Matric)",
         "COMSATS Lahore (NTS NAT — 50% Test, 40% Inter, 10% Matric)",
         "ITU Lahore (ITU Test / NAT — 50% Test, 35% Inter, 15% Matric)",
         "UET Lahore (ECAT — 33% Test, 50% Inter, 17% Matric)",
@@ -62,7 +60,6 @@ with tab1:
         st.caption("ℹ️ GIKI Admission Test is out of **200** marks (requires min 60% in Inter overall, Math & Physics).")
 
     if "LUMS" not in uni:
-        # TWEAK: obtained marks start at 0, totals stay as before
         if "NUST" in uni:
             def_obt, def_tot = 0.0, 200.0
         elif "ITU" in uni:
@@ -95,16 +92,15 @@ with tab1:
 
                 if "NUST" in uni:
                     agg = (test_pct * 0.75) + (inter_pct * 0.15) + (matric_pct * 0.10)
-                elif "FAST" in uni or "COMSATS" in uni:
+                elif "FAST-NUCES Computing" in uni or "COMSATS" in uni:
                     agg = (test_pct * 0.50) + (inter_pct * 0.40) + (matric_pct * 0.10)
+                elif "FAST-NUCES Engineering" in uni or "UET" in uni:
+                    agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
                 elif "ITU" in uni:
                     agg = (test_pct * 0.50) + (inter_pct * 0.35) + (matric_pct * 0.15)
-                elif "UET" in uni:
-                    agg = (test_pct * 0.33) + (inter_pct * 0.50) + (matric_pct * 0.17)
                 else:  # GIKI
                     agg = (test_pct * 0.85) + (matric_pct * 0.15)
 
-                # TWEAK: GIKI minimum Inter check (from your own caption)
                 if "GIKI" in uni and inter_pct < 60:
                     st.error(f"⚠️ GIKI requires at least 60% in Inter. Your Part-1 is {inter_pct:.1f}%.")
 
@@ -117,9 +113,9 @@ with tab2:
     target_agg = st.slider("Select Target Closing Merit (%)", min_value=60.0, max_value=95.0, value=79.0, step=0.5)
 
     req_nust = (target_agg - (inter_pct * 0.15) - (matric_pct * 0.10)) / 0.75
-    req_fast = (target_agg - (inter_pct * 0.40) - (matric_pct * 0.10)) / 0.50
+    req_fast_cs = (target_agg - (inter_pct * 0.40) - (matric_pct * 0.10)) / 0.50
     req_itu = (target_agg - (inter_pct * 0.35) - (matric_pct * 0.15)) / 0.50
-    req_uet = (target_agg - (inter_pct * 0.50) - (matric_pct * 0.17)) / 0.33
+    req_uet_eng = (target_agg - (inter_pct * 0.50) - (matric_pct * 0.17)) / 0.33
     req_giki = (target_agg - (matric_pct * 0.15)) / 0.85
 
     def format_req(req_pct, max_marks):
@@ -141,13 +137,19 @@ with tab2:
             marks_100 = (req_pct / 100) * 100
             return f"**{marks_60:.1f} / 60** (CS) | **{marks_100:.1f} / 100** (Eng/NAT) ({req_pct:.1f}%)"
 
-    # TWEAK: closing merits are labelled as last year's (2026)
+    # GIKI eligibility check for Tab 2
+    if inter_pct < 60:
+        giki_display = f"❌ **Ineligible** (Requires min 60% in Inter; your Part-1 is {inter_pct:.1f}%)"
+    else:
+        giki_display = f"{format_req(req_giki, 200)} *(Last year's 2026 CS/AI closing: ~75–80%)*"
+
     st.write(f"🏛️ **NUST NET (out of 200):** {format_req(req_nust, 200)} *(Last year's 2026 SEECS CS closing: ~76.8–79%)*")
-    st.write(f"💻 **FAST NU Test (out of 100):** {format_req(req_fast, 100)} *(Last year's 2026 LHR/ISB CS closing: ~73–75%)*")
-    st.write(f"📘 **COMSATS NTS NAT (out of 100):** {format_req(req_fast, 100)} *(Last year's 2026 LHR CS: ~85–86.5% | ISB: ~88%)*")
+    st.write(f"💻 **FAST NU Test - CS/Computing (out of 100):** {format_req(req_fast_cs, 100)} *(Last year's 2026 LHR/ISB CS closing: ~73–75%)*")
+    st.write(f"🛠️ **FAST NU Test - Engineering (out of 100):** {format_req(req_uet_eng, 100)} *(Uses 33% Test / 50% Inter / 17% Matric)*")
+    st.write(f"📘 **COMSATS NTS NAT (out of 100):** {format_req(req_fast_cs, 100)} *(Last year's 2026 LHR CS: ~85–86.5% | ISB: ~88%)*")
     st.write(f"🔬 **ITU Lahore Test:** {format_itu_req(req_itu)} *(Last year's 2026 CS closing: ~80.5%)*")
-    st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet, 400)} *(Last year's 2026 Main Campus A1 CS: ~79–82%)*")
-    st.write(f"🏔️ **GIKI Test (out of 200):** {format_req(req_giki, 200)}")
+    st.write(f"⚙️ **UET ECAT (out of 400):** {format_req(req_uet_eng, 400)} *(Last year's 2026 Main Campus A1 CS: ~81–83%)*")
+    st.write(f"🏔️ **GIKI Test (out of 200):** {giki_display}")
     st.caption("Note: LUMS evaluates applicants holistically (Matric, Inter-1, SAT/LCAT & essays) rather than a fixed aggregate cutoff. Closing merits change every year.")
 
 st.divider()
