@@ -3,6 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="Pakistani CS & Engineering Merit Calculator", page_icon="🎓")
 st.title("🎓 Pakistani CS & Engineering Merit Calculator")
 st.caption("Built for FBISE & BISE Lahore FSc / ICS Students | By a 2nd Year CS Applicant")
+st.caption("Based on Matric + Inter Part-1 marks, as used by most universities for admission. Final admission may depend on passing Part-2. Check each prospectus.")
 
 # Step 1: Board Marks Input
 st.subheader("1. Enter Your Board Marks")
